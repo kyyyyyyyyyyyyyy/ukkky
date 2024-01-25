@@ -18,6 +18,7 @@ class UserSeeder extends Seeder
     {
         $superAdmin = User::create([
             'name' => 'he who remain',
+            'username' => '1 sks 5 juta',
             'email' => 'admin@gmail.com',
             'email_verified_at' => now(),
             'password' => bcrypt('password'),
@@ -27,6 +28,7 @@ class UserSeeder extends Seeder
 
         $superAdmin = User::create([
             'name' => 'ky',
+            'username' => 'ukt nabi adam',
             'email' => 'user@gmail.com',
             'email_verified_at' => now(),
             'password' => bcrypt('password'),
