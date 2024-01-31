@@ -1,19 +1,22 @@
 @extends('layouts.master')
 
 @push('css')
+<link rel="stylesheet" href="{{ url('vendor/chart.js/Chart.min.css')}}">
 	<!-- Font Awesome -->
-	<link rel="stylesheet" href="{{ url('fontawesome-free/css/all.min.css')}}">
+	<link rel="stylesheet" href="{{ url('plugins/fontawesome-free/css/all.min.css')}}">
 	<!-- Ionicons -->
 	<link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+	<!-- DataTables -->
+	<link rel="stylesheet" href="{{ url('plugins/datatables-bs4/css/dataTables.bootstrap4.css')}}">
 	<!-- overlayScrollbars -->
 	<link rel="stylesheet" href="{{ url('assets/css/adminlte.min.css')}}">
 	<!-- Select2 -->
-	<link rel="stylesheet" href="{{ url('select2/css/select2.min.css')}}">
-	<link rel="stylesheet" href="{{ url('select2-bootstrap4-theme/select2-bootstrap4.min.css')}}">
+	<link rel="stylesheet" href="{{ url('plugins/select2/css/select2.min.css')}}">
+	<link rel="stylesheet" href="{{ url('plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css')}}">
 	<!-- Google Font: Source Sans Pro -->
 	<link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
 	<!-- Alert -->
-	<script src="{{ url('alert.js')}}"></script>
+	<script src="{{ url('plugins/alert.js')}}"></script>
 @endpush
 
 @section('title', 'Dashboard')
@@ -70,45 +73,8 @@
     </div>
 </div>
 
-<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static"
-     data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel"
-     aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                        aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form action="{{ route('albums.store') }}" method="post">
-                    @csrf
-                    <div class="col-md-12">
-                        <div class="mb-3">
-                            <label for="basicInput" class="form-label">Nama album</label>
-                            <input type="text" placeholder="Input Here" class="form-control" name="name">
-                        </div>
-                    </div>
-
-                    <div class="col-md-12">
-                        <div class="mb-3">
-                            <label for="exampleFormControlTextarea1" class="form-label">Deskripsi</label>
-                            <textarea class="form-control" id="exampleFormControlTextarea1" name="description" rows="3"></textarea>
-                        </div>
-                    </div>
-
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Upload</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-
-
 <!-- Bootstrap JS and jQuery -->
+<script src="https://code.jquery.com/jquery-3.7.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
