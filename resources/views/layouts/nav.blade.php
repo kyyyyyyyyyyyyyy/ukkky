@@ -17,33 +17,27 @@
                 {{-- sub menu side --}}
                 <li class="menu-category">
                 <li class="{{ request()->segment(2) == 'usergroup' ? 'active' : ''}}">
-                    <a href="" class="link" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                    <a href="" class="link" data-bs-toggle="modal" data-bs-target="#formAlbum">
                         <i class="ti-user"></i>
                         <span>Tambah Album</span>
                     </a>
                 </li>
                 <li class="{{ request()->segment(2) == 'users' ? 'active' : ''}}">
-                    <a href="{{ url('superadmin/users')}}" class="link">
+                    <a href="" class="link" data-bs-toggle="modal" data-bs-target="#formFoto">
                         <i class="ti-user"></i>
-                        <span>Users</span>
+                        <span>Tambah Foto</span>
                     </a>
                 </li>
                 <li class="{{ request()->segment(2) == 'educationallevel' ? 'active' : ''}}">
                     <a href="{{ url('superadmin/educationallevel')}}" class="link">
                         <i class="ti-book"></i>
-                        <span>Jenjang Pendidikan</span>
+                        <span>Album</span>
                     </a>
                 </li>
                 <li class="{{ request()->segment(2) == 'employee' ? 'active' : ''}}">
                     <a href="{{ url('superadmin/employee')}}" class="link">
                         <i class="ti-user"></i>
-                        <span>Pegawai DKIS</span>
-                    </a>
-                </li>
-                <li class="{{ request()->segment(2) == 'sector' ? 'active' : ''}}">
-                    <a href="{{ url('superadmin/sector')}}" class="link">
-                        <i class="ti-briefcase"></i>
-                        <span>Bidang</span>
+                        <span>Foto</span>
                     </a>
                 </li>
                 </li>

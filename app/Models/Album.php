@@ -9,6 +9,11 @@ class Album extends Model
 {
     use HasFactory;
 
+    public function fotos()
+    {
+        return $this->hasMany(Foto::class, 'album_id', 'id');
+    }
+
     protected $fillable = [
         'name',
         'description',

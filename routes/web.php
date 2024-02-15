@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\FotoController;
 use App\Http\Controllers\AlbumController;
 use App\Http\Controllers\ProfileController;
 
@@ -28,6 +29,8 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::resource('albums', AlbumController::class);
+    Route::resource('fotos', FotoController::class);
+    Route::post('liked', [FotoController::class, 'liked']);
 });
 
 require __DIR__.'/auth.php';

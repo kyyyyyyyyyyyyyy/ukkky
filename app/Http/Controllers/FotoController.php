@@ -3,12 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\Foto;
+use App\Models\Like;
 use App\Models\Album;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 
-class AlbumController extends Controller
+class  FotoController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -23,11 +25,22 @@ class AlbumController extends Controller
     
         // Menggunakan "with" untuk mengambil relasi fotos dari setiap album
         $albums->load('fotos');
-    
-        return view('dashboard', [
-            'albums' => $albums,
-            'choses' => $choses,
-        ]);
+
+        $fotos = Foto::latest()->get();
+
+        $commentCounts = DB::table('comments')
+            ->select('foto_id', DB::raw('count(*) as comment_count'))
+            ->groupBy('foto_id')
+            ->get()
+            ->pluck('comment_count', 'foto_id');
+        
+        $likeCounts = DB::table('likes')
+            ->select('foto_id', DB::raw('count(*) as like_count'))
+            ->groupBy('foto_id')
+            ->get()
+            ->pluck('like_count', 'foto_id');
+
+        return view('fotos', compact('fotos', 'commentCounts', 'likeCounts', 'choses', 'albums'));
     }
 
     /**
@@ -48,8 +61,24 @@ class AlbumController extends Controller
      */
     public function store(Request $request)
     {
-        Album::create([
-            'name' => $request->name,
+
+        $validation = Validator::make($request->all(),[
+            'image' => 'required|mimes:png,jpg,jpeg'
+        ],[
+            'image.required' => 'File surat wajib diisi.',
+            'image.mimes' => 'Format file tidak didukung. Harap pilih file dengan format pdf, doc, atau docx.'
+        ]);
+
+        // Simpan file
+        $file = $request->file('image');
+        $extension = $file->getClientOriginalExtension();
+        $fileName = 'mailFile_' . date('ymdhis') . '.' . $extension;
+        $file->move(public_path('penyimpanan'), $fileName);
+
+        Foto::create([
+            'title' => $request->title,
+            'album_id' => $request->album_id,
+            'image' => $fileName, 
             'description' => $request->description,
             'user_id' => Auth::user()->id,
         ]);
@@ -76,15 +105,7 @@ class AlbumController extends Controller
      */
     public function edit($id)
     {
-
-        $album = Album::find($id);
-
-        $fotos = Foto::where('user_id', Auth::user()->id)->select('id', 'title', 'image', 'album_id')->latest()->get();
-
-        $choses = Album::where('user_id', Auth::user()->id)->select('id', 'name')->latest()->get();
-
-        return view ('action.album', compact(['album', 'fotos', 'choses']));
-
+        //
     }
 
     /**
@@ -96,15 +117,7 @@ class AlbumController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $data = [
-            'name' => $request->name,
-            'description' => $request->description,
-            'user_id' => Auth::user()->id,
-        ];
-
-        Album::where('id', $id)->update($data);
-
-        return redirect()->route('albums.index');
+        //
     }
 
     /**
@@ -115,22 +128,25 @@ class AlbumController extends Controller
      */
     public function destroy($id)
     {
-        $foto = Foto::where('album_id', $id)->get();
+        //
+    }
 
-        foreach ($foto as $item) {
-            $path = public_path('penyimpanan/' . $item->image);
+    public function liked(Request $request)
+    {
 
-            if (file_exists($path)) {
-                unlink($path);
-            }
+        $value = Like::where('foto_id', $request->foto_id)->where('user_id', Auth::user()->id)->first();
 
-            $item->delete();
+        if($value){
+            $value->delete();
+            return redirect()->back();
+        } else {
+            Like::create([
+                'foto_id' => $request->foto_id,
+                'user_id' => Auth::user()->id,
+            ]);
+
+            return redirect()->back();
         }
-
-        Album::find($id)->delete();
-
-        return redirect()->route('albums.index');
-
 
     }
 }
